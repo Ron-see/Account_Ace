@@ -1,0 +1,527 @@
+<html><head><base href="https://cashflow-forecasting-trainer.app/train">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechNova Solutions - Financial Forecasting Trainer</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f8ff;
+    color: #333;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  }
+  h1, h2, h3, h4 {
+    color: #2c3e50;
+  }
+  .chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .input-group {
+    margin-bottom: 20px;
+  }
+  #feedback {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #e8f6f3;
+    border-radius: 5px;
+    display: none;
+  }
+  .table-responsive {
+    margin-bottom: 20px;
+  }
+  .table th {
+    background-color: #f8f9fa;
+  }
+  .financial-statement {
+    margin-bottom: 30px;
+  }
+  .financial-statement h3 {
+    margin-bottom: 15px;
+  }
+  .financial-statement .table {
+    width: 100%;
+  }
+  .financial-statement .table th {
+    font-weight: bold;
+  }
+  .financial-statement .table td, .financial-statement .table th {
+    padding: 8px;
+  }
+  .financial-statement .total-row {
+    font-weight: bold;
+    background-color: #f8f9fa;
+  }
+  .pricing-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    margin-bottom: 30px;
+  }
+  .pricing-table th, .pricing-table td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  .pricing-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+  }
+  .pricing-table tr:hover {
+    background-color: #f5f5f5;
+  }
+  .pricing-table .feature-name {
+    text-align: left;
+    font-weight: bold;
+  }
+  .nav-pills .nav-link {
+    color: #007bff;
+  }
+  .nav-pills .nav-link.active {
+    background-color: #007bff;
+    color: white;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-4">TechNova Solutions - Financial Forecasting Training Session</h1>
+    
+    <ul class="nav nav-pills mb-4" id="mainTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="trainer-tab" data-bs-toggle="pill" data-bs-target="#trainer" type="button" role="tab" aria-controls="trainer" aria-selected="true">Forecasting Trainer</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="company-tab" data-bs-toggle="pill" data-bs-target="#company" type="button" role="tab" aria-controls="company" aria-selected="false">Company Background</button>
+      </li>
+    </ul>
+    
+    <div class="tab-content" id="mainTabContent">
+      <div class="tab-pane fade show active" id="trainer" role="tabpanel" aria-labelledby="trainer-tab">
+        <ul class="nav nav-tabs mb-4" id="trainerTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="historical-tab" data-bs-toggle="tab" data-bs-target="#historical" type="button" role="tab" aria-controls="historical" aria-selected="true">Historical Data</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="forecast-tab" data-bs-toggle="tab" data-bs-target="#forecast" type="button" role="tab" aria-controls="forecast" aria-selected="false">Forecast</button>
+          </li>
+        </ul>
+        
+        <div class="tab-content" id="trainerTabContent">
+          <div class="tab-pane fade show active" id="historical" role="tabpanel" aria-labelledby="historical-tab">
+            <h2 class="mb-3">Historical Financial Statements</h2>
+            <div id="financialStatements"></div>
+          </div>
+          
+          <div class="tab-pane fade" id="forecast" role="tabpanel" aria-labelledby="forecast-tab">
+            <h2 class="mb-3">Forecast Year 2024</h2>
+            <form id="forecastForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="revenue" class="form-label">Sales Revenue ($):</label>
+                  <input type="number" class="form-control" id="revenue" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="netCashFlow" class="form-label">Net Cash Flow ($):</label>
+                  <input type="number" class="form-control" id="netCashFlow" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit Forecast</button>
+            </form>
+          </div>
+        </div>
+        
+        <div id="feedback" class="mt-4"></div>
+      </div>
+      
+      <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="company-tab">
+        <h2>TechNova Solutions - Company Background</h2>
+        <p>TechNova Solutions is a leading software company specializing in Enterprise Resource Planning (ERP) solutions. Founded in 2015, the company has quickly grown to become a significant player in the SaaS (Software as a Service) industry.</p>
+        
+        <h3>Company Overview</h3>
+        <ul>
+          <li>Founded: 2015</li>
+          <li>Headquarters: Silicon Valley, California</li>
+          <li>Employees: 500+</li>
+          <li>Global Presence: Offices in North America, Europe, and Asia</li>
+        </ul>
+        
+        <h3>Core Product: NovaSuite ERP</h3>
+        <p>NovaSuite is TechNova's flagship ERP solution, designed to streamline business operations for companies of all sizes. It offers modules for:</p>
+        <ul>
+          <li>Financial Management</li>
+          <li>Human Resources</li>
+          <li>Supply Chain Management</li>
+          <li>Customer Relationship Management (CRM)</li>
+          <li>Business Intelligence and Analytics</li>
+        </ul>
+        
+        <h3>Key Differentiators</h3>
+        <ul>
+          <li>Cloud-native architecture for scalability and flexibility</li>
+          <li>AI-powered predictive analytics for informed decision-making</li>
+          <li>User-friendly interface with customizable dashboards</li>
+          <li>Robust mobile app for on-the-go management</li>
+          <li>Comprehensive API for easy integration with third-party applications</li>
+        </ul>
+        
+        <h3>Market Position</h3>
+        <p>TechNova has experienced rapid growth since its inception, with a compound annual growth rate (CAGR) of over 40% in the past five years. The company has a strong presence in the small to medium-sized enterprise (SME) market and is increasingly gaining traction among larger corporations.</p>
+        
+        <h3>Future Outlook</h3>
+        <p>TechNova is focused on expanding its market share globally, with a particular emphasis on emerging markets in Asia and Latin America. The company is also investing heavily in R&D to incorporate advanced technologies like machine learning and blockchain into its ERP solution.</p>
+        
+        <h3>NovaSuite ERP - Pricing Tiers</h3>
+        <table class="pricing-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Starter</th>
+              <th>Professional</th>
+              <th>Enterprise</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feature-name">Price (per user/month)</td>
+              <td>$49</td>
+              <td>$99</td>
+              <td>Custom</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Core ERP Modules</td>
+              <td>✓</td>
+              <td>✓</td>
+              <td>✓</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Mobile App Access</td>
+              <td>✓</td>
+              <td>✓</td>
+              <td>✓</td>
+            </tr>
+            <tr>
+              <td class="feature-name">AI-Powered Analytics</td>
+              <td>Basic</td>
+              <td>Advanced</td>
+              <td>Premium</td>
+            </tr>
+            <tr>
+              <td class="feature-name">API Access</td>
+              <td>Limited</td>
+              <td>Full</td>
+              <td>Full</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Customization</td>
+              <td>-</td>
+              <td>Limited</td>
+              <td>Full</td>
+            </tr>
+            <tr>
+              <td class="feature-name">24/7 Support</td>
+              <td>-</td>
+              <td>✓</td>
+              <td>✓</td>
+            </tr>
+            <tr>
+              <td class="feature-name">Dedicated Account Manager</td>
+              <td>-</td>
+              <td>-</td>
+              <td>✓</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let historicalData;
+    let possibleActualResults;
+    let currentActualResultIndex = 0;
+
+    function generateHistoricalData() {
+      const years = 5;
+      const data = [];
+      let baseRevenue = 2000000; // Starting revenue for 2019
+      let growthRate = 1.4; // 40% year-over-year growth
+
+      for (let i = 0; i < years; i++) {
+        const year = moment().subtract(years - i, 'years').format('YYYY');
+        const revenue = Math.floor(baseRevenue * Math.pow(growthRate, i));
+        const cogs = Math.floor(revenue * 0.3); // 30% of revenue for SaaS company
+        const grossProfit = revenue - cogs;
+        const operatingExpenses = Math.floor(revenue * 0.5); // 50% of revenue
+        const netIncome = grossProfit - operatingExpenses;
+        const cashFromOperations = netIncome + Math.floor(Math.random() * 400000 - 200000);
+        const cashFromInvesting = -Math.floor(Math.random() * 800000); // Negative as it's usually cash outflow
+        const cashFromFinancing = Math.floor(Math.random() * 1200000 - 600000);
+        const netCashFlow = cashFromOperations + cashFromInvesting + cashFromFinancing;
+
+        data.push({
+          year,
+          revenue,
+          cogs,
+          grossProfit,
+          operatingExpenses,
+          netIncome,
+          cashFromOperations,
+          cashFromInvesting,
+          cashFromFinancing,
+          netCashFlow
+        });
+      }
+
+      return data;
+    }
+
+    function populateFinancialStatements() {
+      const container = document.getElementById('financialStatements');
+      container.innerHTML = '';
+
+      // Income Statement
+      let incomeStatementHtml = `
+        <div class="financial-statement">
+          <h3>Income Statement</h3>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Item</th>
+                ${historicalData.map(y => `<th>${y.year}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Revenue</td>
+                ${historicalData.map(y => `<td>$${y.revenue.toLocaleString()}</td>`).join('')}
+              </tr>
+              <tr>
+                <td>Cost of Goods Sold</td>
+                ${historicalData.map(y => `<td>$${y.cogs.toLocaleString()}</td>`).join('')}
+              </tr>
+              <tr class="total-row">
+                <td>Gross Profit</td>
+                ${historicalData.map(y => `<td>$${y.grossProfit.toLocaleString()}</td>`).join('')}
+              </tr>
+              <tr>
+                <td>Operating Expenses</td>
+                ${historicalData.map(y => `<td>$${y.operatingExpenses.toLocaleString()}</td>`).join('')}
+              </tr>
+              <tr class="total-row">
+                <td>Net Income</td>
+                ${historicalData.map(y => `<td>$${y.netIncome.toLocaleString()}</td>`).join('')}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      // Cash Flow Statement
+      let cashFlowStatementHtml = `
+        <div class="financial-statement">
+          <h3>Cash Flow Statement</h3>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Item</th>
+                ${historicalData.map(y => `<th>${y.year}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cash from Operations</td>
+                ${historicalData.map(y => `<td>$${y.cashFromOperations.toLocaleString()}</td>`).join('')}
+              </tr>
+              <tr>
+                <td>Cash from Investing</td>
+                ${historicalData.map(y => `<td>$${y.cashFromInvesting.toLocaleString()}</td>`).join('')}
+              </tr>
+              <tr>
+                <td>Cash from Financing</td>
+                ${historicalData.map(y => `<td>$${y.cashFromFinancing.toLocaleString()}</td>`).join('')}
+              </tr>
+              <tr class="total-row">
+                <td>Net Cash Flow</td>
+                ${historicalData.map(y => `<td>$${y.netCashFlow.toLocaleString()}</td>`).join('')}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+      container.innerHTML = incomeStatementHtml + cashFlowStatementHtml;
+    }
+
+    function generatePossibleActualResults() {
+      const lastYear = historicalData[historicalData.length - 1];
+      const possibleResults = [];
+
+      for (let i = 0; i < 5; i++) {
+        const growthRate = 1 + (Math.random() * 0.4 + 0.1); // 10% to 50% growth
+        const revenue = Math.floor(lastYear.revenue * growthRate);
+        const netCashFlowGrowth = 1 + (Math.random() * 0.6 - 0.3); // -30% to 30% change
+        const netCashFlow = Math.floor(lastYear.netCashFlow * netCashFlowGrowth);
+
+        possibleResults.push({ revenue, netCashFlow });
+      }
+
+      return possibleResults;
+    }
+
+    function submitForecast(event) {
+      event.preventDefault();
+
+      const forecast = {
+        revenue: parseFloat(document.getElementById('revenue').value),
+        netCashFlow: parseFloat(document.getElementById('netCashFlow').value)
+      };
+
+      const actualResult = possibleActualResults[currentActualResultIndex];
+      const feedback = generateFeedback(forecast, actualResult);
+      document.getElementById('feedback').innerHTML = feedback;
+      document.getElementById('feedback').style.display = 'block';
+
+      // Move to the next actual result for the next submission
+      currentActualResultIndex = (currentActualResultIndex + 1) % possibleActualResults.length;
+    }
+
+    function generateFeedback(forecast, actual) {
+      let feedback = `<h3>Forecast Feedback for Year 2024</h3>`;
+      feedback += `<table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Your Forecast</th>
+            <th>Actual</th>
+            <th>Difference</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+      for (const [key, value] of Object.entries(forecast)) {
+        const difference = ((value - actual[key]) / actual[key] * 100).toFixed(2);
+        feedback += `
+          <tr>
+            <td>${key === 'revenue' ? 'Sales Revenue' : 'Net Cash Flow'}</td>
+            <td>$${value.toLocaleString()}</td>
+            <td>$${actual[key].toLocaleString()}</td>
+            <td>${difference}%</td>
+          </tr>`;
+      }
+
+      feedback += `</tbody></table>`;
+
+      const reasons = [
+        {
+          text: "A major competitor in the ERP market faced a data breach, leading to increased customer trust and market share for TechNova.",
+          salesImpact: 850000,
+          cashFlowImpact: 680000
+        },
+        {
+          text: "The company's expansion into the Asia-Pacific market yielded better-than-expected results, significantly boosting overall sales.",
+          salesImpact: 1200000,
+          cashFlowImpact: 960000
+        },
+        {
+          text: "A global shift towards remote work increased demand for cloud-based ERP solutions, benefiting TechNova's SaaS model.",
+          salesImpact: 950000,
+          cashFlowImpact: 760000
+        },
+        {
+          text: "The launch of NovaSuite's mobile app attracted a new segment of customers, expanding the company's user base.",
+          salesImpact: 750000,
+          cashFlowImpact: 600000
+        },
+        {
+          text: "Increased R&D spending on AI capabilities led to innovative features, giving TechNova a competitive edge in the market.",
+          salesImpact: 1100000,
+          cashFlowImpact: -200000
+        },
+        {
+          text: "Changes in data privacy regulations required businesses to upgrade their ERP systems, driving sales for TechNova's compliant solutions.",
+          salesImpact: 650000,
+          cashFlowImpact: 520000
+        },
+        {
+          text: "A strategic partnership with a major cloud service provider reduced infrastructure costs and improved profit margins.",
+          salesImpact: 300000,
+          cashFlowImpact: 900000
+        },
+        {
+          text: "Economic uncertainty led some potential customers to delay ERP implementation projects, affecting sales growth.",
+          salesImpact: -500000,
+          cashFlowImpact: -400000
+        },
+        {
+          text: "Increased competition in the SME market segment put pressure on pricing, impacting revenue growth.",
+          salesImpact: -400000,
+          cashFlowImpact: -320000
+        },
+        {
+          text: "Currency fluctuations in key international markets affected the company's global revenue and cash flow.",
+          salesImpact: -250000,
+          cashFlowImpact: -200000
+        }
+      ];
+
+      const selectedReasons = reasons.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+      feedback += `<h4>Factors that influenced TechNova's actual results:</h4>`;
+      feedback += `<ul>`;
+      selectedReasons.forEach(reason => {
+        feedback += `
+          <li>
+            ${reason.text}
+            <div class="impact-details">
+              <h5>Impact:</h5>
+              <p>Sales Revenue: $${reason.salesImpact.toLocaleString()} | Net Cash Flow: $${reason.cashFlowImpact.toLocaleString()}</p>
+            </div>
+          </li>`;
+      });
+      feedback += `</ul>`;
+
+      // Calculate total impact
+      const totalSalesImpact = selectedReasons.reduce((sum, reason) => sum + reason.salesImpact, 0);
+      const totalCashFlowImpact = selectedReasons.reduce((sum, reason) => sum + reason.cashFlowImpact, 0);
+
+      feedback += `
+        <div class="impact-details">
+          <h5>Total Impact of These Factors:</h5>
+          <p>Sales Revenue: $${totalSalesImpact.toLocaleString()} | Net Cash Flow: $${totalCashFlowImpact.toLocaleString()}</p>
+        </div>`;
+
+      return feedback;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      historicalData = generateHistoricalData();
+      populateFinancialStatements();
+      possibleActualResults = generatePossibleActualResults();
+
+      const forecastForm = document.getElementById('forecastForm');
+      if (forecastForm) {
+        forecastForm.addEventListener('submit', submitForecast);
+      } else {
+        console.error("Forecast form not found");
+      }
+    });
+  </script>
+</body>
+</html>
